@@ -1,73 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Malaysian State Population Map</title>
-    <meta charset="utf-8" />
+<head>
+  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.5.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.21.0"></script>
+  
+  <!-- CSS file -->
+  <link rel="stylesheet" type="text/css" href="css/styles.css" media="all">
 
-    <script src="https://cdn.jsdelivr.net/npm/vega@5.30.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
 
-    <style media="screen">
-      .vega-actions a {
-        margin-right: 5px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Malaysian State Population</h1>
-    <div id="vis"></div>
+</head>
+<body>
+  
+<div id="choropleth_map"></div>
 
-    <script>
-      // Replace with your TopoJSON data URL or embedded content
-      const topojsonUrl = 'https://raw.githubusercontent.com/Arrtish2702/FIT3179-WK9/main/gadm41_MYS_1.json';
+<script type="text/javascript">
 
-    //   // Replace with your population data
-    //   const populationData = [
-    //     {"state": "Selangor", "population": 6554000},
-    //     {"state": "Johor", "population": 3794000},
-    //     {"state": "Sabah", "population": 3742000},
-    //     // Add more state population data
-    //   ];
+  var spec2 = "js/choropleth_map.vg.json";
+  vegaEmbed('#choropleth_map', spec2).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+</script>
 
-      var vlSpec = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-        description: 'A choropleth map of Malaysian states showing population.',
-        data: {
-          url: topojsonUrl,
-          format: {
-            type: 'topojson',
-            feature: 'malaysia_states' // Adjust based on TopoJSON structure
-          }
-        },
-        transform: [
-          {
-            lookup: 'properties.state_name', // Adjust based on TopoJSON state property
-            from: {
-              data: { values: populationData },
-              key: 'state',
-              fields: ['population']
-            }
-          }
-        ],
-        projection: { type: 'mercator' },
-        mark: 'geoshape',
-        encoding: {
-          color: {
-            field: 'population',
-            type: 'quantitative',
-            scale: { scheme: 'blues' },
-            legend: { title: 'Population' }
-          },
-          tooltip: [
-            { field: 'properties.state_name', title: 'State' },
-            { field: 'population', title: 'Population' }
-          ]
-        }
-      };
-
-      // Embed the visualization in the container with id `vis`
-      vegaEmbed('#vis', vlSpec);
-    </script>
-  </body>
+</body>
 </html>
