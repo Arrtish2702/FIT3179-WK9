@@ -1,0 +1,97 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Population of Malaysian States (2020) - Bar Chart with Interactions",
+    "width": 800,
+    "height": 400,
+    "config": {
+      "background": "#a8cde0"
+    },
+    "data": {
+      "url": "https://raw.githubusercontent.com/Arrtish2702/FIT3179-WK9/main/population_state_with_year_filtered.csv",
+      "format": {"type": "csv"}
+    },
+    "transform": [
+      {
+        "filter": "datum.year == 2020"
+      }
+    ],
+    "params": [
+      {
+        "name": "yearSelection",
+        "value": 2020,
+        "bind": {
+          "input": "select",
+          "options": [2018, 2019, 2020],
+          "name": "Select Year: "
+        }
+      }
+    ],
+    "transform": [
+      {
+        "filter": "datum.year == yearSelection"
+      }
+    ],
+    "layer": [
+      {
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "state",
+            "type": "nominal",
+            "sort": "-y",
+            "axis": {"title": "State"}
+          },
+          "y": {
+            "field": "population",
+            "type": "quantitative",
+            "axis": {"title": "Population"}
+          },
+          "color": {
+            "field": "population",
+            "type": "quantitative",
+            "scale": {"scheme": "reds"},
+            "legend": {"title": "Population"}
+          },
+          "tooltip": [
+            {"field": "state", "type": "nominal", "title": "State"},
+            {"field": "population", "type": "quantitative", "title": "Population"},
+            {"field": "year", "type": "nominal", "title": "Year"}
+          ]
+        }
+      },
+      {
+        "mark": {
+          "type": "rule",
+          "color": "black"
+        },
+        "encoding": {
+          "y": {
+            "aggregate": "max",
+            "field": "population",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 5,
+          "dy": -5
+        },
+        "encoding": {
+          "y": {
+            "aggregate": "max",
+            "field": "population",
+            "type": "quantitative"
+          },
+          "text": {
+            "aggregate": "max",
+            "field": "population",
+            "type": "quantitative"
+          }
+        }
+      }
+    ]
+  }
+  
